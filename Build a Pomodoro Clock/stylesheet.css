@@ -1,0 +1,103 @@
+* {
+  font-family: Ubuntu;
+}
+
+main {
+  margin: auto;
+  width: 80vw;
+  text-align: center;
+/*   background-color:red; */
+}
+
+h1 {
+  font-size: 4rem;
+  font-weight: 400; 
+}
+
+button {
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 0 20px;
+  margin: 0 10px;
+  height: 35px;
+  background: #66cccc;
+  -webkit-transition: width 2s;
+  transition: border 0.3s, border-radius 0.3s;
+  border: none;
+  border-radius: 20px;
+  color: white;
+}
+
+button:before {
+  background-color: #ffffff;
+}
+button:hover {
+  border-radius: 10px; 
+}
+
+button:disabled {
+  cursor: not-allowed;
+  background: grey;
+  border-radius: 20px !important; /* oh much VIP. So important. Very MVP property */
+}
+
+.interval-instance {
+  display: flex;
+  margin: 0 75px;
+  align-items: center;
+}
+
+.intervals-container {
+ display: flex; 
+ justify-content: center;
+}
+
+.intervals-container h3 {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+
+.interval-number {
+  font-size: 2rem;
+  margin: 20px;
+}
+
+.timer-container {
+  border: 3px solid grey;
+  border-radius: 25px;
+  width: 400px;
+  margin: auto;
+  margin-top: 75px;
+  padding-bottom: 30px;
+}
+
+.clock-running {
+  border: 3px solid #66cccc;
+}
+
+.timer-container h3 {
+  text-align: center;
+  font-size: 3rem;
+  margin-top: 30px;
+  font-weight: 400;
+}
+
+.timer-container span {
+  font-size: 3rem;
+  font-weight: 300;
+}
+
+.timer-buttons {
+  margin-top: 30px;
+}
+
+.timer-buttons button {
+  font-size: 1.5rem;
+  margin: 0 30px;
+}
+
+.playBtn {
+  border-radius: 10px;
+}
