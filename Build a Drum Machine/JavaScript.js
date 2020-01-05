@@ -9,24 +9,27 @@ class DrumPad extends React.Component {
     keys.forEach(key => key.addEventListener("transitionend", this.removeTransition));
 
     window.addEventListener("keydown", this.playSound);
-    keys.forEach(key => key.addEventListener("click", this.playSound));
+    //keys.forEach(key => key.addEventListener("click", this.playSound));
+    console.log(this.props.volume); 
   }
   componentWillUnmount() {
     window.removeEventListener("keydown", this.playSound); 
   }
     
-  playSound = (event) => {
-    // console.log(event);
+  playSound = (eventOrKeyEventCode) => {
+    // #heheOrStupidCode
     let audio = undefined;
     let key = undefined;
     if(event.code) {
-      audio = document.querySelector(`audio[data-key="${event.code}"]`);
-      key = document.querySelector(`.key[data-key="${event.code}"]`);
-    } else if (event.target.parentElement.dataset.key) {
-      audio = 
-document.querySelector(`audio[data-key="${event.target.parentElement.dataset.key}"]`);
-      key =
-document.querySelector(`.key[data-key="${event.target.parentElement.dataset.key}"]`);
+      audio = document.querySelector(`audio[data-key="${eventOrKeyEventCode.code}"]`);
+      key = document.querySelector(`.key[data-key="${eventOrKeyEventCode.code}"]`);
+    } else  {
+      /*
+      audio = document.querySelector(`audio[data-key="${event.target.parentElement.dataset.key}"]`);
+      key = document.querySelector(`.key[data-key="${event.target.parentElement.dataset.key}"]`);
+      */
+      audio = document.querySelector(`audio[data-key="${eventOrKeyEventCode}"]`);
+      key = document.querySelector(`.key[data-key="${eventOrKeyEventCode}"]`);
     }
 
     if(!audio) return;
@@ -38,6 +41,7 @@ document.querySelector(`.key[data-key="${event.target.parentElement.dataset.key}
     // }, 100);
     // };
     this.props.changeDisplay(key.id);
+    audio.volume = this.props.volume;
   } 
 
   removeTransition = (event) => {
@@ -62,7 +66,7 @@ document.querySelector(`.key[data-key="${event.target.parentElement.dataset.key}
     return (
       <div className="pad">
         {samples}
-      </div>
+      </div> 
     );
   };
 }
@@ -73,7 +77,8 @@ function Sample (props) {
       <div
         data-key={props.keyEventCode}
         id={props.name}
-        className="key drum-pad" >
+        className="key drum-pad"
+        onClick={() => props.playSound(props.keyEventCode)} >
           <p>{props.keyEventCode[3]}</p>
           {/*<p>{props.name}</p> */}
           <audio
@@ -86,6 +91,17 @@ function Sample (props) {
     </>
   );
 }
+
+const VolumeSlider = (props) => {
+  let slider1 = null;
+
+  return (  
+    <div className="volumeContainer">
+      <p>Volume</p>
+      <input type="range" ref={(input) => { slider = input; }} className="slider" min="1" max="50" step="1" onChange={() => props.onChangeVolume(slider.value)}/>
+    </div>
+  );
+};
 
 class App extends React.Component {
   constructor() {
@@ -138,16 +154,26 @@ class App extends React.Component {
           name: "Error"
         }
       },
-      lastPlayedSample: "null"
+      display: "Use Keyboard",
+      volume: 1
     }
   }
   
   changeDisplay = (newSample) => {
-    if (this.lastPlayedSample == newSample) return;
+    if (this.display == newSample) return;
     
     this.setState(prevState => {
       return {
-        lastPlayedSample: newSample
+        display: newSample
+      }
+    });
+  }
+  
+  onChangeVolume = (value) => {
+    this.setState(prevState => {
+      return {
+        display: "Volume: " + value,
+        volume: value / 100
       }
     });
   }
@@ -157,10 +183,13 @@ class App extends React.Component {
       <main id="drum-machine">
         <h1>Drum Machine</h1>
         <h3></h3>
-        <div id="display">{this.state.lastPlayedSample}</div>
+        <div id="display">{this.state.display}</div> 
+        
         <DrumPad
           soundbank={this.state.soundbank}
-          changeDisplay={this.changeDisplay} />
+          changeDisplay={this.changeDisplay}
+          volume={this.state.volume} />
+        <VolumeSlider onChangeVolume={this.onChangeVolume} />
       </main>
       
     );
