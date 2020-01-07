@@ -34,6 +34,13 @@ h1 {
   border-radius: 10px;
   box-shadow: 2px 3px 10px rgba(0,0,0,0.5);
   position: relative;
+  background: linear-gradient(45deg, #E0EAFC 0%, #CFDEF3 100%); 
+}
+
+.boxCenterColor {
+  margin: 0px 20px;
+  padding: 45px 0px;
+  background: linear-gradient(300deg, #000428 -80%, #004e92 50%); 
 }
 
 .previousContainer {
@@ -44,6 +51,7 @@ h1 {
   border-radius: 10px;
   box-shadow: 2px 3px 10px rgba(0,0,0,0.5);
   position: relative;
+  background: linear-gradient(45deg, #E0EAFC 0%, #CFDEF3 100%); 
 }
 
 .previousContainer .author {
@@ -52,6 +60,16 @@ h1 {
 
 .previousContainer .quote {
   padding-bottom: 50px;
+  -webkit-text-fill-color: transparent;
+	text-shadow: 0 -1px 0 rgba(0,0,0,0.4);
+}
+
+.previousContainer .tweetIcon {
+  background: linear-gradient(180deg, grey 0%, #8e9eab 50%); 
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 7px 10px;
+  cursor: pointer;
 }
 
 .quote {
@@ -59,9 +77,9 @@ h1 {
   font-size: 1.6rem;
   font-weight: 600;
 /*   background: linear-gradient(330deg, #00c6ff -20%, #0072ff 130%);  */
-  color: #00a2ff ;
-/*   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent; */
+  color: #00a2ff;
+/*   -webkit-background-clip: text; */
+/*   -webkit-text-fill-color: transparent;  */
   text-align: center;
   padding-top: 5px;
   padding-bottom: 110px;
@@ -102,6 +120,7 @@ h1 {
   bottom: 10px;
   width: 100%;
   border-top: 1px solid grey;
+/*width: 94.3%; //Only use with boxCenterColor*/
   display: flex;
 
 }
@@ -140,4 +159,36 @@ h1 {
 /*   text-decoration: underline; */
   border-bottom: 1px solid #1972b3;
   background-position: 0 5%;
+}
+
+
+
+
+
+
+.previousContainer-appear {
+  opacity: 0; 
+}
+
+.previousContainer-appear-active {
+  opacity: 1;
+  transition: opacity 1000ms;
+}
+
+
+.previousContainer-enter {
+  opacity: 0;
+  transition: opacity 1000ms;
+}
+
+.previousContainer-enter-active {
+  opacity: 1;
+  transition: opacity 1000ms;
+}
+.previousContainer-exit {
+  opacity: 1;
+}
+.previousContainer-exit-active {
+  opacity: 0;
+  transition: opacity 100ms;
 }
