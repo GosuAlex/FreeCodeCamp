@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css?family=Merriweather|Playfair+Display:700|Poppins:400,600&display=swap');
+
+
+* {
+  font-family: Poppins;
+}
+
+body {
+  background: linear-gradient(90deg, #00c6ff 0%, #0072ff 100%);
+}
+
+main {
+  margin: auto;
+  width: 85vw;
+}
+
+h1 {
+  font-size: 3.5rem;
+  font-weight: 600;
+/*   background: linear-gradient(90deg, #9796f0 0%, #fbc7d4 100%); 
+  -webkit-background-clip: text; */
+  -webkit-text-fill-color: transparent;
+	text-shadow: 0 -1px 0 rgba(0,0,0,0.4);
+  margin: 75px 0px;
+  text-align: center;
+}
+
+.boxContainer {
+  margin: auto;
+  margin-bottom: 75px;
+  min-height: 250px;
+  width: 700px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 2px 3px 10px rgba(0,0,0,0.5);
+  position: relative;
+}
+
+.previousContainer {
+  margin: auto;
+  margin-top: 30px;
+  width: 700px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 2px 3px 10px rgba(0,0,0,0.5);
+  position: relative;
+}
+
+.previousContainer .author {
+  bottom: 0;
+}
+
+.previousContainer .quote {
+  padding-bottom: 50px;
+}
+
+.quote {
+  font-family: Merriweather;
+  font-size: 1.6rem;
+  font-weight: 600;
+/*   background: linear-gradient(330deg, #00c6ff -20%, #0072ff 130%);  */
+  color: #00a2ff ;
+/*   -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; */
+  text-align: center;
+  padding-top: 5px;
+  padding-bottom: 110px;
+  margin: 0px 20px;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.1);
+}
+
+.quote:before {
+  font-family: "Playfair+Display";
+  content: "\"";
+  font-size: 2.6rem;
+}
+
+.quote:after {
+  font-family: "Playfair+Display";
+  content: "\"";
+  font-size: 2.8rem;
+}
+
+.author {
+  font-size: 1.3rem;
+  text-align: right;
+  margin: 0px 10px;
+  padding-bottom: 10px;
+  position: absolute;
+  right: 15px;
+  bottom: 70px;
+  -webkit-text-fill-color: transparent;
+	text-shadow: 0 -1px 0 rgba(0,0,0,0.4);
+}
+
+.author:before {
+  content:"- ";
+}
+
+.footer {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  border-top: 1px solid grey;
+  display: flex;
+
+}
+
+.tweetIcon {
+  font-size: 50px;
+  background: linear-gradient(180deg, #00c6ff -50%, #0072ff 100%); 
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 3px 10px;
+  cursor: pointer;
+}
+
+.btn {
+  margin: 6px 10px;
+  margin-bottom: 0px;
+  height: 45px;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+/*   background-image: linear-gradient(90deg, #00c6ff -50%, #0072ff 100%);  */
+  border: 1px solid #24a3ff;
+  border-bottom: 3px solid #1972b3;
+  font-size: 1.2rem;
+  border-radius: 0.3em;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  background-image: linear-gradient(to bottom, #00c6ff, #0072ff);
+  background-size: auto 250%;
+  background-position: 0 60%;
+
+}
+
+.btn:hover {
+/*   background-color: #38d2ff; */
+/*   text-decoration: underline; */
+  border-bottom: 1px solid #1972b3;
+  background-position: 0 5%;
+}
