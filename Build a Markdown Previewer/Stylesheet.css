@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css?family=Merriweather|Playfair+Display:700|Poppins:400,600&display=swap');
+
+
+* {
+  font-family: Poppins;
+}
+
+body {
+  background: linear-gradient(180deg, #ee9ca7 0%, #ffdde1 100%);
+}
+
+main {
+  margin: auto;
+  width: 70vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#header {
+  font-size: 4rem;
+  background: linear-gradient(180deg, #83a4d4 0%, #b6fbff 70%); 
+  -webkit-background-clip: text; 
+  -webkit-text-fill-color: transparent;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2)
+}
+
+.inputField {
+  margin-bottom: 50px;
+  resize: none;
+  width: 75%;
+  height: 300px;
+}
+
+.outputField {
+/*   resize: none; */
+  width: 100%;
+  height: 100vh;
+  background-color: white;
+  border: solid 1px black;
+/*   text-indent: -35px; */
+  overflow: scroll;
+  /*   text-align: center; */
+}
+
+code {
+  background: lightgrey;
+  font-family: monospace;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 4px;
+}
+
+blockquote {
+  text-decoration: underline;
+  font-size: 1.2rem;
+}
