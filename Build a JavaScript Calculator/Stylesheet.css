@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Poppins:400,600&display=swap');
+
+* {
+  font-family: Poppins;
+}
+
+body {
+  background: linear-gradient(00deg, #E0EAFC 0%, #CFDEF3 100%);
+}
+
+main {
+  margin: auto;
+  width: 70vw;
+  height: 100vh;
+}
+
+h1 {
+  font-size: 4rem;
+  font-weight: 600;
+  background: linear-gradient(0deg, #4B79A1 30%, #283E51 130%); 
+  -webkit-background-clip: text; 
+  -webkit-text-fill-color: transparent; 
+/* 	text-shadow: 0px -2px 0px rgba(0,0,0,0.4); */
+  margin: 75px 0px;
+  text-align: center;
+}
+
+.myCalc {
+  display: grid;
+  justify-content: center;
+  text-align: center;
+/*   line-height: 90px; */
+  grid-template-columns: repeat(4, 80px);
+  grid-gap: 2px;
+  grid-auto-rows: 80px;
+}
+
+.myCalc :nth-child(n) {
+/*   border: black solid 2px; */
+  border: solid 2px rgba(0, 0, 0, .1);
+  padding: 20px;
+  background: linear-gradient(0deg, #4B79A1 50%, #283E51 150%);
+  color: white;
+  font-size: 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.myCalc :nth-child(n):hover {
+  color: #4B79A1;
+  transition: all 0.1s linear;
+  font-weight: 600;
+}
+
+.myCalc :nth-child(n)::before {
+  position: absolute;
+  content: "";
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-image: linear-gradient(
+    to bottom,
+    hsl(344, 100%, 50%),
+    hsl(31, 100%, 40%)
+  );
+  z-index: -1;
+  transition: opacity 0.2s linear;
+  opacity: 0;
+  background: linear-gradient(0deg, #8e9eab 0%, #eef2f3 100%);
+  border: solid 2px rgba(0, 0, 0, .1);
+  color: black;
+}
+
+.myCalc :nth-child(n):hover::before {
+  opacity: 1;
+}
+
+.myCalcScreen {
+  background-color: #7998b3;
+  border-radius: 10px 10px 0 0;
+  margin: auto;
+  margin-bottom: 2px;
+  width: calc(82px * 4 - 2px); /*grid-gap:2px; * grid-auto-rows:80px; - bordersLeft&Right*/
+  height: 80px; 
+}
+
+.myCalcScreen p {
+  margin-right: 10px;
+  text-align: right;
+  line-height: 70px;
+  font-size: 2rem;
+  font-family: Open Sans;
+  color: white;
+}
