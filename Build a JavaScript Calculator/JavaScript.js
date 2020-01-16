@@ -36,7 +36,7 @@ const CalculatorUI = (props) => {
 const CalculatorScreen = (props) => {
   return(
     <div className={`${props.calcClass}Screen`}>
-      <p id="display">{props.screenValue}</p>
+      <p id="display">{props.screenValue ? props.screenValue : "0" }</p>
     </div>
   );
 };
@@ -54,6 +54,7 @@ class App extends React.Component {
   
   getButtonPressed = (btn) => {
     console.log(typeof this.state.screenValue);
+    console.log(this.state.screenValue);
 
     if(!Number.isNaN(Number(btn))) {
       return this.setState(prevState => ({
@@ -62,6 +63,17 @@ class App extends React.Component {
     }
     
     if(btn === "÷" || btn === "X" || btn === "-" || btn === "+") {
+      if(this.state.screenValue == "") {
+        return;
+      }
+      if(
+        (this.state.screenValue.charAt(this.state.screenValue.length - 2) !== "+"
+        && Number.isNaN(Number(this.state.screenValue.charAt(this.state.screenValue.length - 2)))
+        ) || (this.state.screenValue.charAt(this.state.screenValue.length - 2) == "+" && btn === "+")) {
+        
+        const newState = this.state.screenValue.slice(0, this.state.screenValue.length - 2);
+        return this.setState({ screenValue: newState + btn + " "});
+      }
       return this.setState(prevState => ({
         screenValue: prevState.screenValue += " " + btn + " "
       }));
@@ -99,13 +111,16 @@ class App extends React.Component {
     const regex = /\s÷X-+/;
     let arrayToCalc = stringToCalc.split(" ");
     
+    //const regex = \[+](?=\d|-)|(\d|-)\g; //to find only digits and - allowed after operator
+    //\D-\D   - around non digits
+    
     this.multiplicationAndDivision(arrayToCalc);
     this.additionAndSubtraction(arrayToCalc);
     
     this.setState(state => {
       const history = state.history.concat(state.value);
       return {
-        screenValue: arrayToCalc.toString(),
+        screenValue: Number(arrayToCalc[0].toFixed(4)).toString() == 0 ? "" : Number(arrayToCalc[0].toFixed(4)).toString(),
         history 
       }
     });
