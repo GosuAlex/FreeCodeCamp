@@ -65,7 +65,7 @@ h1 {
     hsl(31, 100%, 40%)
   );
   z-index: -1;
-  transition: opacity 0.2s linear;
+  transition: opacity 0.150s linear;
   opacity: 0;
   background: linear-gradient(0deg, #8e9eab 0%, #eef2f3 100%);
   border: solid 2px rgba(0, 0, 0, .1);
@@ -92,4 +92,60 @@ h1 {
   font-size: 2rem;
   font-family: Open Sans;
   color: white;
+}
+
+/* Button arrangement */
+
+.myCalc #UIButton-C {
+  grid-column: 4;
+  grid-row: 1;
+}
+
+.myCalc #UIButton-CE {
+  grid-column: 4;
+  grid-row: 2;
+}
+
+.myCalc [id~="UIButton-<"] {
+  grid-column: 4;
+  grid-row: 2;
+}
+
+.myCalc [id~="UIButton-."] {
+  grid-column: 1;
+  grid-row: 4 / 4;
+}
+
+.myCalc #UIButton-0 {
+  grid-column: 2;
+  grid-row: 4;
+}
+
+
+.myCalc [id~="UIButton-="] {
+  grid-column: 3 / 5;
+  grid-row: 4;
+}
+
+.myCalc [id~="UIButton-+"] {
+  grid-column: 4;
+  grid-row: 5;
+}
+
+.myCalc [id~="UIButton--"] {
+  grid-column: 3;
+  grid-row: 5;
+}
+
+.myCalc #UIButton-X {
+  grid-column: 2;
+  grid-row: 5;
+}
+
+.myCalc [id~="UIButton-÷"] {
+  grid-column: 1;
+  grid-row: 5;
+  font-size: 2.2rem;
+  font-family: Ubuntu;
+  padding: 14px;
 }
