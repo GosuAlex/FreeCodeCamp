@@ -1,6 +1,6 @@
 const FCCCalculatorUI = (props) => {
   let calcButtons = [1,2,3,4,5,6,7,8,9,0,"+","-","X","÷","=",".","C","CE","<"];
-  const FCCRequirements = ["one","two","three","four","five","six","seven","eight","nine","zero","add","subtract","multiply","divide","equals","decimal","C","clear","<"];
+  const FCCRequirements = ["one","two","three","four","five","six","seven","eight","nine","zero","add","subtract","multiply","divide","equals","decimal","clear","CE","<"];
   let UIButtons = calcButtons.map((btn, idx) => {
     return (
       <div id={FCCRequirements[idx]} onClick={(event) => props.getButtonPressed(event.target.textContent)} >
@@ -17,10 +17,10 @@ const FCCCalculatorUI = (props) => {
 };
 
 const CalculatorUI = (props) => {
-  let calcButtons = [1,2,3,4,5,6,7,8,9,0,"+","-","X","÷","=",".","C","CE","<"];
+  let calcButtons = [1,2,3,4,5,6,7,8,9,0,"+","-","X","÷","=",".","C","CE"];
   let UIButtons = calcButtons.map(btn => {
     return (
-      <div id={`UIButton-${btn}`} onClick={(event) => props.getButtonPressed(event.target.textContent)} >
+      <div id={`UIButton-${btn}`} onMouseDown={(event) => props.getButtonPressed(event.target.textContent)} >
         {btn}
       </div>
     );
@@ -34,9 +34,11 @@ const CalculatorUI = (props) => {
 };
 
 const CalculatorScreen = (props) => {
+  let current = props.screenValue.split(" ");  
   return(
     <div className={`${props.calcClass}Screen`}>
-      <p id="display">{props.screenValue ? props.screenValue : "0" }</p>
+      <p id="">{props.history ? props.history : "" }</p>
+      <p id="display">{props.screenValue ? current[current.length - 1] ? current[current.length - 1] : current[current.length - 2] : "0" }</p>
     </div>
   );
 };
@@ -47,32 +49,83 @@ class App extends React.Component {
     super();
     this.state = {
       calcClass: "myCalc",
-      screenValue: "58008",
+      screenValue: "",
       history: [],
     }
   }
   
   getButtonPressed = (btn) => {
-    console.log(typeof this.state.screenValue);
     console.log(this.state.screenValue);
+    console.log(btn);
 
+    if((/[ ]0$|^0(?![.])/g).test(this.state.screenValue) && btn != "=" && btn != "C") {
+      if((/[X+÷\-]/g).test(btn)) {
+        // const newState = this.state.screenValue.slice(0, this.state.screenValue.length - 3);
+        // return this.setState({ screenValue: newState + btn});
+        return this.setState(prevState => ({
+          screenValue: prevState.screenValue += " " + btn + " "
+        }));
+      } else {
+        console.log("second");
+        const newState = this.state.screenValue.slice(0, this.state.screenValue.length - 1);
+        return this.setState({ screenValue: newState + btn});
+      }
+    }
+    
     if(!Number.isNaN(Number(btn))) {
       return this.setState(prevState => ({
         screenValue: prevState.screenValue += btn
       }));
     }
     
-    if(btn === "÷" || btn === "X" || btn === "-" || btn === "+") {
+    // if((/[X+÷\-]/g).test(btn)) {
+    //   if(this.state.screenValue == "") {
+    //     return;
+    //   }
+    //   if(
+    //     ((this.state.screenValue.charAt(this.state.screenValue.length - 2) !== "+"
+    //     && Number.isNaN(Number(this.state.screenValue.charAt(this.state.screenValue.length - 2))))
+    //     || (this.state.screenValue.charAt(this.state.screenValue.length - 2) == "+" && btn !== "-"))
+    //     && this.state.screenValue.charAt(this.state.screenValue.length - 2) !== "."
+    //   ) {
+    //     console.log(this.state.screenValue.charAt(this.state.screenValue.length - 2));
+    //     if(this.state.screenValue.charAt(this.state.screenValue.length - 5) == "+") {
+    //       const newState = this.state.screenValue.slice(0, this.state.screenValue.length - 5);
+    //       return this.setState({ screenValue: newState + btn + " "});
+    //     } else {
+    //       const newState = this.state.screenValue.slice(0, this.state.screenValue.length - 2);
+    //       return this.setState({ screenValue: newState + btn + " "});
+    //     }
+    //   }
+    //   return this.setState(prevState => ({
+    //     screenValue: prevState.screenValue += " " + btn + " "
+    //   }));
+    // }
+
+    if((/[X+÷\-]/g).test(btn)) {
       if(this.state.screenValue == "") {
         return;
       }
       if(
-        (this.state.screenValue.charAt(this.state.screenValue.length - 2) !== "+"
-        && Number.isNaN(Number(this.state.screenValue.charAt(this.state.screenValue.length - 2)))
-        ) || (this.state.screenValue.charAt(this.state.screenValue.length - 2) == "+" && btn === "+")) {
-        
-        const newState = this.state.screenValue.slice(0, this.state.screenValue.length - 2);
-        return this.setState({ screenValue: newState + btn + " "});
+        ((!(/[X+÷\-]/g).test(this.state.screenValue.charAt(this.state.screenValue.length - 2))
+          && Number.isNaN(Number(this.state.screenValue.charAt(this.state.screenValue.length - 2))))
+        || ((/[X+÷\-]/g).test(this.state.screenValue.charAt(this.state.screenValue.length - 2)) ))
+        && this.state.screenValue.charAt(this.state.screenValue.length - 2) !== "."
+      ) {
+        if((/[X+÷\-]/g).test(this.state.screenValue.charAt(this.state.screenValue.length - 4))) {
+          console.log("oppe")
+          const newState = this.state.screenValue.slice(0, this.state.screenValue.length - 4);
+          return this.setState({ screenValue: newState + btn + " "});
+        } else if (btn === "-") {
+          console.log("mid")
+          return this.setState(prevState => ({
+            screenValue: prevState.screenValue += btn + " "
+          }));
+        } else {
+          console.log("her")
+          const newState = this.state.screenValue.slice(0, this.state.screenValue.length - 2);
+          return this.setState({ screenValue: newState + btn + " "});
+        }
       }
       return this.setState(prevState => ({
         screenValue: prevState.screenValue += " " + btn + " "
@@ -86,19 +139,20 @@ class App extends React.Component {
       case "CE":
         return console.log("is CE");
         break;
-      case "<":
-        return console.log("is <");
-        break;
       case "=":
         return this.calculate(this.state.screenValue);
         break;
       case ".":
-        return this.setState(prevState => ({
-          screenValue: prevState.screenValue += "."
-        }));
+        if(this.state.screenValue.charAt(this.state.screenValue.length - 1) == "." || (/(\d[.]+\d+$)*([.]+\d+$)/g).test(this.state.screenValue)) {
+          return;
+        } else {
+          return this.setState(prevState => ({
+            screenValue: prevState.screenValue += "."
+          }));  
+        }
         break;
       default:
-        return this.setState({screenValue: "Error!"});
+        return this.setState({history: "Error!"});
         break;
     }
   }
@@ -108,7 +162,11 @@ class App extends React.Component {
   }
   
   calculate = (stringToCalc) => {
-    const regex = /\s÷X-+/;
+    const regex = /[÷X\-+]/g;
+    if(stringToCalc == "" || !regex.test(stringToCalc)) {
+      return;
+    } 
+    
     let arrayToCalc = stringToCalc.split(" ");
     
     //const regex = \[+](?=\d|-)|(\d|-)\g; //to find only digits and - allowed after operator
@@ -127,9 +185,19 @@ class App extends React.Component {
   }
   
   multiplicationAndDivision = (arr) => {
+    console.log([...arr]);
+    
+    for(let idx in arr) {
+      if (arr[idx] === "-" && (/[÷X+\-]/g).test(arr[idx - 1])) {
+        arr.splice(idx ,1);
+        arr[idx] = "-" + arr[idx];
+      }
+    }
+    console.log([...arr]);
+    
     while(arr.includes("X")) {
       let idx = arr.indexOf("X")
-
+      console.log(arr[idx - 1] + " " + arr[idx] + " " + arr[idx + 1] + "her");
       let calcIteration = Number(arr[idx - 1]) * Number(arr[idx + 1]);
       arr[idx - 1] = calcIteration;
       arr.splice(idx, 2);
@@ -176,13 +244,14 @@ class App extends React.Component {
 
         <CalculatorScreen
           calcClass={this.state.calcClass}
-          screenValue={this.state.screenValue} />
-        <CalculatorUI
+          screenValue={this.state.screenValue}
+          history={this.state.history} />
+        {/*<CalculatorUI
+          calcClass={this.state.calcClass}
+          getButtonPressed={this.getButtonPressed} />*/}
+        <FCCCalculatorUI
           calcClass={this.state.calcClass}
           getButtonPressed={this.getButtonPressed} />
-        {/* <FCCCalculatorUI
-              calcClass={this.state.calcClass}
-              getButtonPressed={this.getButtonPressed} />*/}
       </main>
     );
   };
