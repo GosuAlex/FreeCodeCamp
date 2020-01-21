@@ -1,3 +1,4 @@
+// FCCCalculatorUI was only used to satisfy FreeCodeCamp's user stories requirements
 const FCCCalculatorUI = (props) => {
   let calcButtons = [1,2,3,4,5,6,7,8,9,0,"+","-","X","÷","=",".","C","CE","<"];
   const FCCRequirements = ["one","two","three","four","five","six","seven","eight","nine","zero","add","subtract","multiply","divide","equals","decimal","clear","CE","<"];
@@ -161,6 +162,7 @@ class App extends React.Component {
     console.log("backspace")
   }
   
+  // Could have used eval(); But nah.
   calculate = (stringToCalc) => {
     const regex = /[÷X\-+]/g;
     if(stringToCalc == "" || !regex.test(stringToCalc)) {
@@ -246,10 +248,10 @@ class App extends React.Component {
           calcClass={this.state.calcClass}
           screenValue={this.state.screenValue}
           history={this.state.history} />
-        {/*<CalculatorUI
+        {/*<FCCCalculatorUI
           calcClass={this.state.calcClass}
           getButtonPressed={this.getButtonPressed} />*/}
-        <FCCCalculatorUI
+        <CalculatorUI
           calcClass={this.state.calcClass}
           getButtonPressed={this.getButtonPressed} />
       </main>
