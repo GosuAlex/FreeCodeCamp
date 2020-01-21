@@ -35,7 +35,8 @@ const CalculatorUI = (props) => {
 };
 
 const CalculatorScreen = (props) => {
-  let current = props.screenValue.split(" ");  
+  //let current = props.screenValue.split(" ");  
+  let current = props.screenValue; 
   return(
     <div className={`${props.calcClass}Screen`}>
       <p id="">{props.history ? props.history : "" }</p>
@@ -50,7 +51,7 @@ class App extends React.Component {
     super();
     this.state = {
       calcClass: "myCalc",
-      screenValue: "",
+      screenValue: [],
       history: [],
     }
   }
@@ -58,84 +59,24 @@ class App extends React.Component {
   getButtonPressed = (btn) => {
     console.log(this.state.screenValue);
     console.log(btn);
-
-    if((/[ ]0$|^0(?![.])/g).test(this.state.screenValue) && btn != "=" && btn != "C") {
-      if((/[X+÷\-]/g).test(btn)) {
-        // const newState = this.state.screenValue.slice(0, this.state.screenValue.length - 3);
-        // return this.setState({ screenValue: newState + btn});
-        return this.setState(prevState => ({
-          screenValue: prevState.screenValue += " " + btn + " "
-        }));
-      } else {
-        console.log("second");
-        const newState = this.state.screenValue.slice(0, this.state.screenValue.length - 1);
-        return this.setState({ screenValue: newState + btn});
-      }
-    }
     
+    // STUPID JAVASCRIPT WITH GLOBAL STATE FOR REGEX WITH GLOBAL FLAG!!*@%!! REMEMBER TO regex.lastIndex=0 OR NO /g
+    const regexForOperators = /[X+÷\-]/g;
+
     if(!Number.isNaN(Number(btn))) {
-      return this.setState(prevState => ({
-        screenValue: prevState.screenValue += btn
-      }));
+      return this.addNumber(btn);
     }
     
-    // if((/[X+÷\-]/g).test(btn)) {
-    //   if(this.state.screenValue == "") {
-    //     return;
-    //   }
-    //   if(
-    //     ((this.state.screenValue.charAt(this.state.screenValue.length - 2) !== "+"
-    //     && Number.isNaN(Number(this.state.screenValue.charAt(this.state.screenValue.length - 2))))
-    //     || (this.state.screenValue.charAt(this.state.screenValue.length - 2) == "+" && btn !== "-"))
-    //     && this.state.screenValue.charAt(this.state.screenValue.length - 2) !== "."
-    //   ) {
-    //     console.log(this.state.screenValue.charAt(this.state.screenValue.length - 2));
-    //     if(this.state.screenValue.charAt(this.state.screenValue.length - 5) == "+") {
-    //       const newState = this.state.screenValue.slice(0, this.state.screenValue.length - 5);
-    //       return this.setState({ screenValue: newState + btn + " "});
-    //     } else {
-    //       const newState = this.state.screenValue.slice(0, this.state.screenValue.length - 2);
-    //       return this.setState({ screenValue: newState + btn + " "});
-    //     }
-    //   }
-    //   return this.setState(prevState => ({
-    //     screenValue: prevState.screenValue += " " + btn + " "
-    //   }));
-    // }
-
-    if((/[X+÷\-]/g).test(btn)) {
-      if(this.state.screenValue == "") {
-        return;
-      }
-      if(
-        ((!(/[X+÷\-]/g).test(this.state.screenValue.charAt(this.state.screenValue.length - 2))
-          && Number.isNaN(Number(this.state.screenValue.charAt(this.state.screenValue.length - 2))))
-        || ((/[X+÷\-]/g).test(this.state.screenValue.charAt(this.state.screenValue.length - 2)) ))
-        && this.state.screenValue.charAt(this.state.screenValue.length - 2) !== "."
-      ) {
-        if((/[X+÷\-]/g).test(this.state.screenValue.charAt(this.state.screenValue.length - 4))) {
-          console.log("oppe")
-          const newState = this.state.screenValue.slice(0, this.state.screenValue.length - 4);
-          return this.setState({ screenValue: newState + btn + " "});
-        } else if (btn === "-") {
-          console.log("mid")
-          return this.setState(prevState => ({
-            screenValue: prevState.screenValue += btn + " "
-          }));
-        } else {
-          console.log("her")
-          const newState = this.state.screenValue.slice(0, this.state.screenValue.length - 2);
-          return this.setState({ screenValue: newState + btn + " "});
-        }
-      }
-      return this.setState(prevState => ({
-        screenValue: prevState.screenValue += " " + btn + " "
-      }));
+    if(regexForOperators.test(btn)) {
+      return this.addOperator(btn);
     }
     
     switch(btn) {
+      case ".":
+        return this.addDot(btn);
+        break;  
       case "C":
-        return this.setState({screenValue: ""});
+        return this.setState({screenValue: []});
         break;
       case "CE":
         return console.log("is CE");
@@ -158,9 +99,75 @@ class App extends React.Component {
     }
   }
   
-  backspace = () => {
-    console.log("backspace")
+  clearEntry = () => {
+    console.log("clearEntry")
   }
+  
+  addDot = (dot) => {
+    const newState = this.state.screenValue;
+    
+    if((/[.]/).test(this.state.screenValue[this.state.screenValue.length-1]) || Number.isNaN(Number(this.state.screenValue[this.state.screenValue.length-1]))) {
+      return;
+    } else {
+      newState[newState.length-1] += dot;
+      this.setState({
+        screenValue: newState 
+      });
+    }
+  }
+  
+  addNumber = (number) => {
+    const newState = this.state.screenValue;
+    if(!Number.isNaN(Number(newState[newState.length-1]))) {
+      /*If last item is number, just add current digit to it*/
+      newState[newState.length-1] += number;
+    } else if (newState[newState.length-2] == "X" || newState[newState.length-2] == "÷" ) {
+      /*If there are X or ÷ before -, move - into current number so it becomes: number (x||÷) -number and not 2 operators after each other.*/
+      newState[newState.length-1] = "-" + number;
+    } else {
+      newState.push(number);
+    }      
+    this.setState({
+      screenValue: newState 
+    });
+  }
+  
+  addOperator = (operator) => {
+    const lastChar = this.state.screenValue[this.state.screenValue.length-1];
+    const secondLastChar = this.state.screenValue[this.state.screenValue.length-2];
+    const newState = this.state.screenValue;
+    
+    if(this.state.screenValue == "" || lastChar == operator) {
+      return;
+    }
+    
+    if(secondLastChar == "X" || secondLastChar == "÷") {
+      newState.pop();
+      newState[this.state.screenValue.length-1] = operator;
+      return this.setState({
+        screenValue: newState
+      });
+    }
+    
+    if(operator == "-" && (lastChar == "X" || lastChar == "÷")) {
+      newState.push(operator);
+      return this.setState({
+        screenValue: newState
+      });
+    }
+    
+    if(lastChar == "-" || lastChar == "+") {
+      newState[this.state.screenValue.length-1] = operator;
+      return this.setState({
+        screenValue: newState
+      });
+    }
+    
+    newState.push(operator);
+    return this.setState({
+      screenValue: newState
+    });
+  } 
   
   // Could have used eval(); But nah.
   calculate = (stringToCalc) => {
