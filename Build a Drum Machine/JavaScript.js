@@ -182,9 +182,7 @@ class App extends React.Component {
     return (
       <main id="drum-machine">
         <h1>Drum Machine</h1>
-        <h3></h3>
         <div id="display">{this.state.display}</div> 
-        
         <DrumPad
           soundbank={this.state.soundbank}
           changeDisplay={this.changeDisplay}

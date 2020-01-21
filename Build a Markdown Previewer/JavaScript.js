@@ -1,4 +1,4 @@
-
+// Using Marked.js library to parse text into markdown
 
 const MarkdownContainer = (props) => {
   return (
@@ -7,6 +7,7 @@ const MarkdownContainer = (props) => {
         className="inputField"
         id="editor"
         onChange={(event) => props.getTextInput(event.target.value)}
+        key={props.rerender}
       >
         {props.markdownText}
       </textarea>
@@ -46,6 +47,7 @@ it = infiniteOddOrEven(1);
 
 [Link to Picture](https://octodex.github.com/images/yaktocat.png)
 `,
+      rerender: true
     }
   }
   
@@ -54,6 +56,7 @@ it = infiniteOddOrEven(1);
   }
   
   translateTextIntoMarkdown = (text) => {
+//  Using Marked.js instead
 //     const rules = [
 //       [/#{6}\s?([^\n]+)\n/g, "<h6>$1</h6>"],
 //       [/#{5}\s?([^\n]+)\n/g, "<h5>$1</h5>"],
@@ -88,17 +91,19 @@ it = infiniteOddOrEven(1);
   }
   
   clearInputText = () => {
-    
+    this.setState({markdownText: "", rerender: !this.state.rerender});
+    this.forceUpdate();
   }
   
   render() {
     return (
       <main>
         <h1 id="header">Markdown Previewer</h1>
-        <button>Clear</button>
+        <button onClick={this.clearInputText} className="btn">Clear</button>
         <MarkdownContainer 
           getTextInput={this.getTextInput}
-          markdownText={this.state.markdownText} />
+          markdownText={this.state.markdownText}
+          rerender={this.state.rerender} />
         <div 
           // dangerouslySetInnerHTML = {{__html: this.state.markdownText}}
           dangerouslySetInnerHTML = {{__html: marked(this.state.markdownText)}}

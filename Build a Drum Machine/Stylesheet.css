@@ -56,15 +56,16 @@ h1 {
   cursor: pointer;
 }
 
-.key :first-child {
+/* .key :first-child {
   font-size: 1.5rem;
   font-weight: 500;
-}
+} */
 
 .key p {
   margin: 10px;
   color: #545454;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
+  font-weight: 500;
 }
 
 .hit {
@@ -74,3 +75,70 @@ h1 {
             -5px -5px 4px #c4c0c9;
 }
 
+.volumeContainer {
+  margin: auto;
+  width: 80wh;
+  margin-top: 10px;
+  font-size: 2rem;
+}
+
+.volumeContainer p {
+  margin-bottom: 0px;
+  font-weight: 300;
+  color: #545454;
+}
+
+.slider {
+  margin: auto;
+  width: 80vw;
+  -webkit-appearance: none;
+  height: 10px;
+  border-radius: 10px;
+  background: rgb(155,160,180,1);
+  background: linear-gradient(90deg, rgba(155,160,180,1) 0%, rgba(160,160,170,1) 100%);
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background: rgb(170,120,120);
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: #d7d3dd;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  main {
+    width: 90vw;
+  }
+  
+  .pad {
+    flex-wrap: wrap;
+    padding: 10px;
+  }
+  
+  .key {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .key p {
+    font-size: 1.2rem;
+  }
+}

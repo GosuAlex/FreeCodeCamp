@@ -1,19 +1,17 @@
-const { TransitionGroup, CSSTransition } = ReactTransitionGroup;
-
 const QuoteBox = (props) => {
   return (
-      <div className="boxContainer" id="quote-box">
-        <div className="boxCenterColor!IGNORE">
-          <div>
-            <h6 className="quote" id="text">{props.currentQuote.text}</h6>
-          </div>
-          <p className="author" id="author">{props.currentQuote.author}</p>
-          <div className="footer">
-            <a href={`https://twitter.com/intent/tweet?hashtags=InspirationalQuotes&text=${props.currentQuote.text}`} target="_blank" id="tweet-quote"><i className="fab fa-twitter-square tweetIcon"></i></a>
-            <button className="btn" id="new-quote" onClick={props.pickRandomQuote} >New Quote</button>
-          </div>
+    <div className="boxContainer" id="quote-box">
+      <div className="boxCenterColor!IGNORE">
+        <div>
+          <h6 className="quote" id="text">{props.currentQuote.text}</h6>
+        </div>
+        <p className="author" id="author">{props.currentQuote.author}</p>
+        <div className="footer">
+          <a href={`https://twitter.com/intent/tweet?hashtags=InspirationalQuotes&text=${props.currentQuote.text}`} target="_blank" id="tweet-quote"><i className="fab fa-twitter-square tweetIcon"></i></a>
+          <button className="btn" id="new-quote" onClick={props.pickRandomQuote} >New Quote</button>
         </div>
       </div>
+    </div>
   );
 };
 
@@ -70,7 +68,7 @@ class App extends React.Component {
   render() {
     return (
       <main>
-        <h1>Quote Machine</h1>
+        <h1>Quote Machine</h1>  
         <QuoteBox 
           currentQuote={this.state.currentQuote}
           pickRandomQuote={this.pickRandomQuote} />
