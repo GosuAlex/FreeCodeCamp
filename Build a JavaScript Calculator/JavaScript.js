@@ -1,4 +1,5 @@
 // FCCCalculatorUI was only used to satisfy FreeCodeCamp's user stories requirements
+// 0.X-0. doesnt work.
 const FCCCalculatorUI = (props) => {
   let calcButtons = [1,2,3,4,5,6,7,8,9,0,"+","-","X","÷","=",".","C","CE","<"];
   const FCCRequirements = ["one","two","three","four","five","six","seven","eight","nine","zero","add","subtract","multiply","divide","equals","decimal","clear","CE","<"];
@@ -35,12 +36,12 @@ const CalculatorUI = (props) => {
 };
 
 const CalculatorScreen = (props) => {
-  //let current = props.screenValue.split(" ");  
-  let current = props.screenValue; 
   return(
     <div className={`${props.calcClass}Screen`}>
-      <p id="">{props.history ? props.history : "" }</p>
-      <p id="display">{props.screenValue ? current[current.length - 1] ? current[current.length - 1] : current[current.length - 2] : "0" }</p>
+      {/*<p id="">{props.history ? props.history : "" }</p>
+      <p id="display">{props.screenValue[0] != null ? props.screenValue : "0" }</p>*/}
+      <p id="">{props.history ? props.history.toString().length > 16 ? props.history.join("").substring(0,16).concat("..") : props.history : "" }</p>
+      <p id="display">{props.screenValue[0] != null ? props.screenValue.toString().length > 16 ? props.screenValue.join("").substring(0,16).concat("..") : props.screenValue  : "0" }</p>
     </div>
   );
 };
@@ -57,8 +58,8 @@ class App extends React.Component {
   }
   
   getButtonPressed = (btn) => {
-    console.log(this.state.screenValue);
-    console.log(btn);
+    // console.log(this.state.screenValue);
+    // console.log(btn);
     
     // STUPID JAVASCRIPT WITH GLOBAL STATE FOR REGEX WITH GLOBAL FLAG!!*@%!! REMEMBER TO regex.lastIndex=0 OR NO /g
     const regexForOperators = /[X+÷\-]/g;
@@ -76,37 +77,32 @@ class App extends React.Component {
         return this.addDot(btn);
         break;  
       case "C":
-        return this.setState({screenValue: []});
+        return this.setState({screenValue: [], history: []});
         break;
       case "CE":
-        return console.log("is CE");
+        const newState = this.state.screenValue.slice(0,this.state.screenValue.length-1);
+        console.log(newState);
+        return this.setState({
+          screenValue: newState
+        });
         break;
       case "=":
         return this.calculate(this.state.screenValue);
         break;
-      case ".":
-        if(this.state.screenValue.charAt(this.state.screenValue.length - 1) == "." || (/(\d[.]+\d+$)*([.]+\d+$)/g).test(this.state.screenValue)) {
-          return;
-        } else {
-          return this.setState(prevState => ({
-            screenValue: prevState.screenValue += "."
-          }));  
-        }
-        break;
       default:
-        return this.setState({history: "Error!"});
+        return this.setState({screenValue: "Error!"});
         break;
     }
   }
   
-  clearEntry = () => {
-    console.log("clearEntry")
-  }
-  
   addDot = (dot) => {
     const newState = this.state.screenValue;
-    
-    if((/[.]/).test(this.state.screenValue[this.state.screenValue.length-1]) || Number.isNaN(Number(this.state.screenValue[this.state.screenValue.length-1]))) {
+    if(!newState[newState.length-1] || Number.isNaN(Number(newState[newState.length-1]))) {
+      newState.push("0.");
+      this.setState({
+        screenValue: newState 
+      });
+    } else if((/[.]/).test(this.state.screenValue[this.state.screenValue.length-1]) || Number.isNaN(Number(this.state.screenValue[this.state.screenValue.length-1]))) {
       return;
     } else {
       newState[newState.length-1] += dot;
@@ -118,11 +114,14 @@ class App extends React.Component {
   
   addNumber = (number) => {
     const newState = this.state.screenValue;
-    if(!Number.isNaN(Number(newState[newState.length-1]))) {
+    if (((/^[0](?![.])/).test(newState[newState.length-1]) || ((/^(\-0)(?![.])/).test(newState[newState.length-1]) || !newState.length) && number == "0")) {
+      /*If last number begins with 0 or screenValue state is empty. Deny to add number 0*/
+      return;
+    } else if (!Number.isNaN(Number(newState[newState.length-1]))) {
       /*If last item is number, just add current digit to it*/
       newState[newState.length-1] += number;
-    } else if (newState[newState.length-2] == "X" || newState[newState.length-2] == "÷" ) {
-      /*If there are X or ÷ before -, move - into current number so it becomes: number (x||÷) -number and not 2 operators after each other.*/
+    } else if ((newState[newState.length-2] == "X" || newState[newState.length-2] == "÷") || newState[0] == "-" ) {
+      /*If there are X OR ÷ before - OR want first number to be negative, move - into current number so it becomes: number (x||÷) -number and not 2 operators after each other.*/
       newState[newState.length-1] = "-" + number;
     } else {
       newState.push(number);
@@ -137,11 +136,11 @@ class App extends React.Component {
     const secondLastChar = this.state.screenValue[this.state.screenValue.length-2];
     const newState = this.state.screenValue;
     
-    if(this.state.screenValue == "" || lastChar == operator) {
+    if((this.state.screenValue == "" && operator != "-") || lastChar == operator) {
       return;
     }
-    
-    if(secondLastChar == "X" || secondLastChar == "÷") {
+
+    if((secondLastChar == "X" || secondLastChar == "÷") && Number.isNaN(Number(lastChar))) {
       newState.pop();
       newState[this.state.screenValue.length-1] = operator;
       return this.setState({
@@ -150,10 +149,15 @@ class App extends React.Component {
     }
     
     if(operator == "-" && (lastChar == "X" || lastChar == "÷")) {
-      newState.push(operator);
+       newState.push(operator);
+       return this.setState({
+         screenValue: newState
+       });
+    } else if (operator != "-" && (lastChar == "X" || lastChar == "÷")) {
+      newState[this.state.screenValue.length-1] = operator;
       return this.setState({
         screenValue: newState
-      });
+      });        
     }
     
     if(lastChar == "-" || lastChar == "+") {
@@ -169,46 +173,30 @@ class App extends React.Component {
     });
   } 
   
-  // Could have used eval(); But nah.
-  calculate = (stringToCalc) => {
-    const regex = /[÷X\-+]/g;
-    if(stringToCalc == "" || !regex.test(stringToCalc)) {
+  calculate = (arrayToCalc) => {
+    // Could have used eval(); But nah.
+    const regexForOperators = /[÷X\-+]/g;
+    const newHistory = [].concat(arrayToCalc);
+
+    if((!Array.isArray(arrayToCalc) && !arrayToCalc.length) || !regexForOperators.test(arrayToCalc) || Number.isNaN(Number(arrayToCalc[arrayToCalc.length-1]))) {
       return;
     } 
-    
-    let arrayToCalc = stringToCalc.split(" ");
-    
-    //const regex = \[+](?=\d|-)|(\d|-)\g; //to find only digits and - allowed after operator
-    //\D-\D   - around non digits
     
     this.multiplicationAndDivision(arrayToCalc);
     this.additionAndSubtraction(arrayToCalc);
     
-    this.setState(state => {
-      const history = state.history.concat(state.value);
-      return {
-        screenValue: Number(arrayToCalc[0].toFixed(4)).toString() == 0 ? "" : Number(arrayToCalc[0].toFixed(4)).toString(),
-        history 
-      }
+    return this.setState({
+      screenValue: arrayToCalc,
+      history: newHistory
     });
   }
   
-  multiplicationAndDivision = (arr) => {
-    console.log([...arr]);
-    
-    for(let idx in arr) {
-      if (arr[idx] === "-" && (/[÷X+\-]/g).test(arr[idx - 1])) {
-        arr.splice(idx ,1);
-        arr[idx] = "-" + arr[idx];
-      }
-    }
-    console.log([...arr]);
-    
+  multiplicationAndDivision = (arr) => {  
     while(arr.includes("X")) {
       let idx = arr.indexOf("X")
       console.log(arr[idx - 1] + " " + arr[idx] + " " + arr[idx + 1] + "her");
       let calcIteration = Number(arr[idx - 1]) * Number(arr[idx + 1]);
-      arr[idx - 1] = calcIteration;
+      arr[idx - 1] = Number(calcIteration.toFixed(4)).toString();
       arr.splice(idx, 2);
     }
 
@@ -216,7 +204,7 @@ class App extends React.Component {
       let idx = arr.indexOf("÷")
 
       let calcIteration = Number(arr[idx - 1]) / Number(arr[idx + 1]);
-      arr[idx - 1] = calcIteration;
+      arr[idx - 1] = Number(calcIteration.toFixed(4)).toString();
       arr.splice(idx, 2);
     }
     return arr;
@@ -230,13 +218,13 @@ class App extends React.Component {
         switch(arr[i]) {
           case "+":
             calcIteration = Number(arr[i - 1]) + Number(arr[i + 1]);
-            arr[i - 1] = calcIteration;
+            arr[i - 1] = Number(calcIteration.toFixed(4)).toString();
             arr.splice(i, 2);
             i--;
             break;
           case "-":
             calcIteration = Number(arr[i - 1]) - Number(arr[i + 1]);
-            arr[i - 1] = calcIteration;
+            arr[i - 1] = Number(calcIteration.toFixed(4)).toString();
             arr.splice(i, 2);
             i--;
             break;

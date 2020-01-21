@@ -50,6 +50,7 @@ h1 {
   font-size: 1.5rem;
   position: relative;
   z-index: 1;
+  cursor: default;
 }
 
 .myCalc :nth-child(n):hover {
@@ -76,6 +77,7 @@ h1 {
   background: linear-gradient(0deg, #8e9eab 0%, #eef2f3 100%);
   border: solid 2px rgba(0, 0, 0, .1);
   color: black;
+  cursor: default;
 }
 
 .myCalc :nth-child(n):hover::before {
@@ -88,7 +90,7 @@ h1 {
   margin: auto;
   margin-bottom: 2px;
   width: calc(82px * 4 - 2px); /*grid-gap:2px; * grid-auto-rows:80px; - bordersLeft&Right*/
-  height: 80px; 
+  height: 80px;
 }
 
 .myCalcScreen p {
