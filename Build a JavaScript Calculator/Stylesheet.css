@@ -98,8 +98,12 @@ h1 {
   text-align: right;
 /*   line-height: 70px;  */
   line-height: 0px;  padding-top: 15px;
-  font-size: 2rem;
+  font-size: 1.9rem;
   font-family: Open Sans;
+  color: white;
+}
+
+#topScreen {
   color: white;
 }
 
