@@ -1,3 +1,4 @@
+# FreeCodeCamp
 ## Front End Libraries Projects
 This repository contains the front end libraries module with 5 projects. The complete module is estimated to take 300 hours.
 
